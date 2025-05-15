@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using ReactWebApi.Context;
 using ReactWebApi.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,17 +7,25 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+//.AddNewtonsoftJson() is added to services.AddControllers() for patch request only.
+builder.Services.AddControllers().AddNewtonsoftJson();
+
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddCors(options =>
 {
-	//options.AddDefaultPolicy(policies =>
-	//{
-	//	policies.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
-	//});
-	options.AddPolicy("MyLocalHost", policies =>
+	options.AddDefaultPolicy(policies =>
 	{
-		policies.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod();
+		policies.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
 	});
+	//options.AddPolicy("MyLocalHost", policies =>
+	//{
+	//	policies.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod();
+	//});
+});
+
+builder.Services.AddDbContext<UserContext>(options =>
+{
+	options.UseSqlServer(builder.Configuration.GetConnectionString("UserDBConn"));
 });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -34,8 +44,8 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
-app.UseCors("MyLocalHost");
-//app.UseCors();
+//app.UseCors("MyLocalHost");
+app.UseCors();
 
 app.UseAuthorization();
 
