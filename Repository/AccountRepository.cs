@@ -113,5 +113,15 @@ namespace ReactWebApi.Repository
 			_userContext.users.Remove(user);
 			await _userContext.SaveChangesAsync();
 		}
+
+		public string TestingAPIPostAsync(string name)
+		{
+			return  "Hi " + name + " Welcome to Post Method";
+		}
+
+		public string TestingAPIGetAsync()
+		{
+			return "Welcome to Get Method";
+		}
 	}
 }

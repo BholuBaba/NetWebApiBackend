@@ -22,6 +22,8 @@ namespace ReactWebApi.Controllers
 		[HttpGet("GetAllUsers")]
 		public async Task<IActionResult> GetAllUsers()
 		{
+			//throw new Exception("This is the Exception from GetAllUser Method!");
+			//Not using try catch instead using Global Exception Handler
 			var users = await _accountRepository.GetAllUsersAsync();
 			return Ok(users);
 		}
@@ -83,6 +85,18 @@ namespace ReactWebApi.Controllers
 		{
 			await _accountRepository.DeleteUserAsync(id);
 			return Ok("User Deleted Successfully");
+		}
+
+		[HttpPost("TestPost")]
+		public string TestingAPIPost([FromBody]string name)
+		{
+			return _accountRepository.TestingAPIPostAsync(name);
+		}
+
+		[HttpGet("TestGET")]
+		public string TestingAPIGet()
+		{
+			return _accountRepository.TestingAPIGetAsync();
 		}
 
 	}

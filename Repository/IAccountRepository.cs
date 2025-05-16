@@ -19,5 +19,9 @@ namespace ReactWebApi.Repository
 
 		public Task DeleteUserAsync(int userId);
 
+		public string TestingAPIPostAsync(string name);
+
+		public string TestingAPIGetAsync();
+
 	}
 }
